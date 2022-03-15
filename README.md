@@ -11,9 +11,6 @@
 
 ## BẢNG MỤC LỤC
 * [Giới thiệu môn học](#giới-thiệu-môn-học)
-* [Giới thiệu nhóm](#giới-thiệu-nhóm)
-* [Tài liệu tham khảo](#tài-liệu-tham-khảo)
-* [Chủ đề thảo luận](#chủ-đề-thảo-luận)
 
 ## GIỚI THIỆU MÔN HỌC
 * **Tên môn học:** TRÍ TUỆ NHÂN TẠO - ARTIFICIAL INTELLIGENCE
