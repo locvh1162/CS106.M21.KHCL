@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Assignments",
+    "\\Assignments\\Assignment 1 - DFS-BFS-UCS for Sokoban",
+    "\\Assignments\\Assignment 1 - DFS-BFS-UCS for Sokoban\\sokoban"
   ],
-  "SelectedNode": "\\C:\\Users\\vohoa\\OneDrive\\Documents\\GitHub\\CS106.M21.KHCL",
+  "SelectedNode": "\\Assignments\\Assignment 1 - DFS-BFS-UCS for Sokoban\\sokoban\\Sokoban.py",
   "PreviewInSolutionExplorer": false
 }
