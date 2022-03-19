@@ -180,7 +180,7 @@ def breadthFirstSearch(gameState):
     exploredSet = set()
     temp = []
     ### Implement breadthFirstSearch here
-    while frontier: # check nếu frontier không rỗng
+    while frontier: # check nếu Frontier không rỗng
         # node cuối được đưa vào deque Frontier sẽ ở bên phải, node đầu tiên bên trái (do lệnh append)
         node = frontier.popleft()       # lấy node bên trái frontier <=> mở node nông nhất
         node_action = actions.popleft() # lấy action bên trái của deque actions
@@ -188,12 +188,12 @@ def breadthFirstSearch(gameState):
             temp += node_action[1:]     # True => lưu kết quả gồm các action đã di chuyển vào temp
             break                       # thoát while
         if node[-1] not in exploredSet: # check nếu node đang xét chưa từng mở
-            exploredSet.add(node[-1])   # lưu node vào explored set (để lưu các node đã mở)
+            exploredSet.add(node[-1])   # True => lưu node vào explored set (để lưu các node đã mở)
             for action in legalActions(node[-1][0], node[-1][1]):   # xét các actions có thể xảy ra từ game state hiện tại
-                newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action) # cập nhật game state mới (gồm vị trí Player và Box)
+                newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action) # update game state mới (gồm vị trí Player và Box)
                 if isFailed(newPosBox): # check nếu Box bị kẹt
                     continue            # True => bỏ qua action hiện tại để xét action có thể xảy ra tiếp theo
-                frontier.append(node + [(newPosPlayer, newPosBox)]) # action hiện tại khả thi, Box không bị kẹt => lưu game state đã cập nhật vào bên phải Frontier
+                frontier.append(node + [(newPosPlayer, newPosBox)]) # action hiện tại khả thi, Box không bị kẹt => lưu game state đã update vào bên phải Frontier
                 actions.append(node_action + [action[-1]])          # thêm lại action đã lấy ra khi nãy + action vừa di chuyển vào bên phải deque actions
     return temp
 
@@ -214,7 +214,23 @@ def uniformCostSearch(gameState):
     actions.push([0], 0)
     temp = []
     ### Implement uniform cost search here
-    
+    while frontier: # check nếu frontier không rỗng
+        # frontier và actions đều là cấu trúc dữ liệu dạng heapq, nên node có cost thấp nhất sẽ nằm trên cùng, được pop đầu tiên 
+        node = frontier.pop()           # mở node có cost thấp nhất, priority cao nhất
+        node_action = actions.pop()     # tương tự như trên, xét action có cost ít nhất
+        if isEndState(node[-1][-1]):    # check nếu tất cả các Box đều đã nằm ở Goal
+            temp += node_action[1:]     # True => lưu kết quả gồm các action đã di chuyển vào temp
+            break                       # thoát while
+        if node[-1] not in exploredSet:         # check nếu node đang xét chưa từng mở
+            exploredSet.add(node[-1])           # True => lưu node vào explored set
+            priority = cost(node_action[1:])    # priority để lưu cost từ action 1 đến action đang xét, cost càng thấp priority càng cao
+            # cost ở đây là tổng các bước Player di chuyển không đẩy Box
+            for action in legalActions(node[-1][0], node[-1][1]):   # xét các actions có thể xảy ra từ game state hiện tại
+                newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action) # update game state mới (gồm vị trí Player và Box)
+                if isFailed(newPosBox): # check nếu Box bị kẹt
+                    continue            # True => bỏ qua action hiện tại để xét action có thể xảy ra tiếp theo
+                frontier.push(node + [(newPosPlayer, newPosBox)], priority) # action hiện tại khả thi, Box không bị kẹt => lưu cost và game state đã update vào Frontier
+                actions.push(node_action + [action[-1]], priority)          # lưu cost và thêm lại action đã lấy ra khi nãy + action vừa di chuyển vào heapq actions
     return temp
 
 """Read command"""
