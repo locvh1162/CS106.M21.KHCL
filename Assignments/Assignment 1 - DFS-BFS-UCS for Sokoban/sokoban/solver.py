@@ -180,22 +180,23 @@ def breadthFirstSearch(gameState):
     exploredSet = set()
     temp = []
     ### Implement breadthFirstSearch here
-    while frontier:
-        node = frontier.popleft()
-        node_action = actions.popleft()
-        if isEndState(node[-1][-1]):
-            temp += node_action[1:]
-            break
-        if node[-1] not in exploredSet:
-            exploredSet.add(node[-1])
-            for action in legalActions(node[-1][0], node[-1][1]):
-                newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action)
-                if isFailed(newPosBox):
-                    continue
-                frontier.append(node + [(newPosPlayer, newPosBox)])
-                actions.append(node_action + [action[-1]])
+    while frontier: # check nếu frontier không rỗng
+        # node cuối được đưa vào deque Frontier sẽ ở bên phải, node đầu tiên bên trái (do lệnh append)
+        node = frontier.popleft()       # lấy node bên trái frontier <=> mở node nông nhất
+        node_action = actions.popleft() # lấy action bên trái của deque actions
+        if isEndState(node[-1][-1]):    # check nếu tất cả các Box đều đã nằm ở Goal
+            temp += node_action[1:]     # True => lưu kết quả gồm các action đã di chuyển vào temp
+            break                       # thoát while
+        if node[-1] not in exploredSet: # check nếu node đang xét chưa từng mở
+            exploredSet.add(node[-1])   # lưu node vào explored set (để lưu các node đã mở)
+            for action in legalActions(node[-1][0], node[-1][1]):   # xét các actions có thể xảy ra từ game state hiện tại
+                newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action) # cập nhật game state mới (gồm vị trí Player và Box)
+                if isFailed(newPosBox): # check nếu Box bị kẹt
+                    continue            # True => bỏ qua action hiện tại để xét action có thể xảy ra tiếp theo
+                frontier.append(node + [(newPosPlayer, newPosBox)]) # action hiện tại khả thi, Box không bị kẹt => lưu game state đã cập nhật vào bên phải Frontier
+                actions.append(node_action + [action[-1]])          # thêm lại action đã lấy ra khi nãy + action vừa di chuyển vào bên phải deque actions
     return temp
-    
+
 def cost(actions):
     """A cost function"""
     return len([x for x in actions if x.islower()])
